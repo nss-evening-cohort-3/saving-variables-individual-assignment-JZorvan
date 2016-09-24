@@ -65,5 +65,122 @@ namespace SavingVariables.Tests.DAL
 
             Assert.IsInstanceOfType(actual_context, typeof(SVContext));
         }
+
+        [TestMethod]
+        public void EnsureRepoStartsEmpty()
+        {
+            ConnectMockstoDatastore();
+            SVRepository repo = new SVRepository(mock_context.Object);
+
+            List<Variable> current_variables = repo.GetVariables();
+            int expected_variable_count = 0;
+            int actual_variable_count = current_variables.Count;
+
+            Assert.AreEqual(expected_variable_count, actual_variable_count);
+        }
+
+        [TestMethod]
+        public void CanAddVariableToDatabase()
+        {
+            SVRepository repo = new SVRepository(mock_context.Object);
+            ConnectMockstoDatastore();
+            Variable test_var = new Variable { VarLetter = "x", VarValue = 5 };
+
+            repo.AddVariable(test_var);
+
+            int expected_count = 1;
+            int actual_count = repo.GetVariables().Count;
+
+            Assert.AreEqual(expected_count, actual_count);
+        }
+
+        [TestMethod]
+        public void CanAddVariablesToDatabaseByPassingArgs()
+        {
+            SVRepository repo = new SVRepository(mock_context.Object);
+            ConnectMockstoDatastore();
+
+            repo.AddVariable( "x" , 5 );
+
+            int expected_count = 1;
+            int actual_count = repo.GetVariables().Count;
+
+            Assert.AreEqual(expected_count, actual_count);
+        }
+
+        [TestMethod]
+        public void RepoEnsureFindAuthorByPenName()
+        {
+            variables_list.Add(new Variable { VarId = 0, VarLetter = "a", VarValue = 1 });
+            variables_list.Add(new Variable { VarId = 1, VarLetter = "b", VarValue = 2 });
+            variables_list.Add(new Variable { VarId = 2, VarLetter = "c", VarValue = 3 });
+
+            SVRepository repo = new SVRepository(mock_context.Object);
+            ConnectMockstoDatastore();
+
+            string var_to_find = "b";
+            Variable actual_variable = repo.FindVariable(var_to_find);
+
+            int expected_id = 1;
+            int actual_id = actual_variable.VarId;
+            Assert.AreEqual(expected_id, actual_id);
+        }
+
+        [TestMethod]
+        public void CanDeleteAVariable()
+        {
+            variables_list.Add(new Variable { VarId = 0, VarLetter = "a", VarValue = 1 });
+            variables_list.Add(new Variable { VarId = 1, VarLetter = "b", VarValue = 2 });
+            variables_list.Add(new Variable { VarId = 2, VarLetter = "c", VarValue = 3 });
+
+            SVRepository repo = new SVRepository(mock_context.Object);
+            ConnectMockstoDatastore();
+
+            string var_to_delete = "b";
+            Variable actual_variable = repo.DeleteVariable(var_to_delete);
+
+            int expected_id_to_delete = 1;
+            int actual_id_to_delete = actual_variable.VarId;
+
+            int expected_var_count = 2;
+            int actual_var_count = repo.GetVariables().Count;
+
+            Assert.AreEqual(expected_id_to_delete, actual_id_to_delete);
+            Assert.AreEqual(expected_var_count, actual_var_count);
+        }
+
+        [TestMethod]
+        public void CannotRemoveSomethingThatIsNotThere()
+        {
+            variables_list.Add(new Variable { VarId = 0, VarLetter = "a", VarValue = 1 });
+            variables_list.Add(new Variable { VarId = 1, VarLetter = "b", VarValue = 2 });
+            variables_list.Add(new Variable { VarId = 2, VarLetter = "c", VarValue = 3 });
+
+            SVRepository repo = new SVRepository(mock_context.Object);
+            ConnectMockstoDatastore();
+
+            string var_to_delete = "e";
+            Variable actual_variable = repo.DeleteVariable(var_to_delete);
+
+            Assert.IsNull(actual_variable);
+        }
+
+        [TestMethod]
+        public void CanDeleteAllVariablesFromDatabase()
+        {
+            variables_list.Add(new Variable { VarId = 0, VarLetter = "a", VarValue = 1 });
+            variables_list.Add(new Variable { VarId = 1, VarLetter = "b", VarValue = 2 });
+            variables_list.Add(new Variable { VarId = 2, VarLetter = "c", VarValue = 3 });
+
+            SVRepository repo = new SVRepository(mock_context.Object);
+            ConnectMockstoDatastore();
+
+            repo.DeleteAllVariables();
+
+            int expected_var_count = 0;
+            int actual_var_count = repo.GetVariables().Count;
+
+            Assert.AreEqual(expected_var_count, actual_var_count);
+        }
     }
 }
