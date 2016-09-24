@@ -62,6 +62,8 @@
   <ItemGroup>
     <Compile Include="DAL\SVContext.cs" />
     <Compile Include="DAL\SVRepository.cs" />
+    <Compile Include="Evaluate.cs" />
+    <Compile Include="Exit.cs" />
     <Compile Include="Migrations\201609231355149_InitialCreate.cs" />
     <Compile Include="Migrations\201609231355149_InitialCreate.Designer.cs">
       <DependentUpon>201609231355149_InitialCreate.cs</DependentUpon>
