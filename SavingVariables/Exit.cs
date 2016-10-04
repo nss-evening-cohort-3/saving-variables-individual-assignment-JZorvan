@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SavingVariables
 {
-    public class Exit
+    public class Exits
     {
         public void ExitProgram()
         {

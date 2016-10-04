@@ -64,14 +64,17 @@
     <Compile Include="DAL\SVRepository.cs" />
     <Compile Include="Evaluate.cs" />
     <Compile Include="Exit.cs" />
+    <Compile Include="Lasts.cs" />
     <Compile Include="Migrations\201609231355149_InitialCreate.cs" />
     <Compile Include="Migrations\201609231355149_InitialCreate.Designer.cs">
       <DependentUpon>201609231355149_InitialCreate.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Variables.cs" />
+    <Compile Include="Parser.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VariableHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
